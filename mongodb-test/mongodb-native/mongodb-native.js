@@ -68,6 +68,7 @@ const run = async () => {
             {name: 'Leo', age: '1' },
             {name: 'Justin', age: '10' },
             {name: 'Mary', age: '20' },
+            {name: 'Shuang', age: '18' },
         ];
 
         const mulitiInsert = await collection.insertMany(docs, { ordered: true });
