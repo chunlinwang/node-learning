@@ -31,7 +31,7 @@ const getDogPic = async () => {
       `https://dog.ceo/api/breed/${data}/images/random`
     );
     const res3Pro = superagent.get(
-      `https://dog.ceo/api/breed/sfdasasf/images/random`
+      `https://dog.ceo/api/breed/${data}/images/random`
     );
     const all = await Promise.all([res1Pro, res2Pro, res3Pro]);
     const imgs = all.map((el) => el.body.message);

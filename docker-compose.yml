@@ -1,30 +1,55 @@
-version: "3.7"
+version: '3.7'
 services:
   node:
     build:
-      context: .
+      context: ./dockerfiles/node
       dockerfile: Dockerfile
     tty: true # if not build app.
-    ports: 
+    ports:
       - 8001:8001
-    depends_on: 
-      - mongo
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
     environment:
       RUST_BACKTRACE: full
     volumes:
       - ./:/code
 
-  mongo:
-    image: mongo
+  mongo1:
+    hostname: mongo1
+    container_name: localmongo1
+    build:
+      context: ./dockerfiles/mongodb
+      dockerfile: Dockerfile
+    expose:
+      - 27017
+    ports:
+      - 27011:27017
     restart: always
-    ports: 
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root  
-      MONGO_INITDB_DATABASE: mongo
-    volumes: 
-      - mongodb-data:/data/db
+    entrypoint: ['/usr/bin/mongod', '--bind_ip_all', '--replSet', 'rs0']
+
+  mongo2:
+    hostname: mongo2
+    container_name: localmongo2
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 27012:27017
+    restart: always
+    entrypoint: ['/usr/bin/mongod', '--bind_ip_all', '--replSet', 'rs0']
+
+  mongo3:
+    hostname: mongo3
+    container_name: localmongo3
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 27013:27017
+    restart: always
+    entrypoint: ['/usr/bin/mongod', '--bind_ip_all', '--replSet', 'rs0']
 
   mongo-express:
     image: mongo-express
@@ -33,7 +58,7 @@ services:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root    
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
 
-volumes: 
-  mongodb-data: 
+volumes:
+  mongodb-data:

@@ -2,7 +2,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "singleQuote": true,
   "endOfLine": "lf",
-  "printWidth": 120,
+  "printWidth": 80,
   "[javascript]": {
     "editor.formatOnSave": true
   }
